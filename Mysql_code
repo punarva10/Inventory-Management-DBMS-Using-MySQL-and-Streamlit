@@ -1,0 +1,43 @@
+CREATE TABLE Part_desc (PART_CODE VARCHAR(100), 
+                        PART_NAME VARCHAR(100) NOT NULL PRIMARY KEY, 
+                        CUSTOMER VARCHAR(100), 
+                        PRICE DECIMAL(10, 1) );
+
+LOAD DATA LOCAL INFILE '/Users/punarvdinakar/Desktop/Invento/product_info.csv' 
+INTO TABLE Part_desc FIELDS TERMINATED BY ',';
+
+CREATE TABLE Part_track (PART_NAME VARCHAR(100) NOT NULL PRIMARY KEY, 
+                        WIP INT(10),
+                        FG INT(10),
+                        NG1 INT(10),
+                        NG2 INT(10),
+                        SALES INT(10));
+
+ALTER TABLE Part_track
+ADD CONSTRAINT fk1
+FOREIGN KEY (PART_NAME)
+REFERENCES Part_desc (PART_NAME);
+
+DELIMITER //
+CREATE TRIGGER update_ng1
+BEFORE UPDATE ON Part_track FOR EACH ROW
+BEGIN
+    IF NEW.ng1 <> OLD.ng1 AND NEW.part_name = 'specific_value' THEN
+        SET NEW.fg = NEW.wip - NEW.ng1;
+        SET NEW.wip = 0;
+    END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER update_ng2
+BEFORE UPDATE ON Part_track FOR EACH ROW
+BEGIN
+    IF NEW.ng2 <> OLD.ng2 AND NEW.part_name = 'specific_value' THEN
+        SET NEW.sales = NEW.fg - NEW.ng2;
+        SET NEW.fg = 0;
+    END IF;
+END;
+//
+DELIMITER ;
