@@ -11,7 +11,7 @@ for i in parts:
     my_parts.append(i[0])
 part = st.selectbox('SELECT PART', my_parts)
 
-value = st.number_input('ENTER NUMBER OF DEFECTIVE PARTS: (NG1)', min_value = 0, step = 1)
+value = st.number_input('ENTER NUMBER OF DEFECTIVE PARTS:', min_value = 0, step = 1)
 
 if st.button('Enter'):
     n = update_ng1(part, value)

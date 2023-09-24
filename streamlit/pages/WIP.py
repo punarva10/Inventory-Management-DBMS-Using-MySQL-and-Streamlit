@@ -1,5 +1,6 @@
 import streamlit as st
 from database import get_parts, update_wip
+from datetime import datetime
 
 st.title('Invento by BTPL')
 
@@ -26,7 +27,9 @@ for i in parts:
 part = st.selectbox('SELECT PART', my_parts)
 
 value = st.number_input('ENTER NUMBER OF PARTS PRODUCED:', min_value = 0, step = 1)
-    
+
+current_date = datetime.now().strftime("%Y-%m-%d")
+
 if st.button('Enter'):
-    n = update_wip(part, value)
-    st.write(n)
+    n = update_wip(part, value, current_date, operator, machine)
+    st.write(current_date)

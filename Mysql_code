@@ -13,8 +13,46 @@ CREATE TABLE Part_track (PART_NAME VARCHAR(100) NOT NULL PRIMARY KEY,
                         NG2 INT(10),
                         SALES INT(10));
 
+CREATE TABLE Part_track_2 (DATE VARCHAR(100),
+                        PART_NAME VARCHAR(100) NOT NULL PRIMARY KEY,
+                        WIP INT(10),
+                        FG INT(10),
+                        NG INT(10),
+                        SALES INT(10)
+                        );
+
+CREATE TABLE Wip_entry (DATE VARCHAR(100),
+                        OPERATOR_NAME VARCHAR(100),
+                        MACHINE_NAME VARCHAR(100),
+                        PART_NAME VARCHAR(100),
+                        AMOUNT INT(10));
+
+CREATE TABLE Fg_entry (DATE VARCHAR(100),
+                        OPERATOR_NAME VARCHAR(100),
+                        PART_NAME VARCHAR(100),
+                        AMOUNT INT(10));
+
+CREATE TABLE Sales_entry (DATE VARCHAR(100),
+                        OPERATOR_NAME VARCHAR(100),
+                        PART_NAME VARCHAR(100),
+                        AMOUNT INT(10));
+
+ALTER TABLE Wip_entry
+ADD PRIMARY KEY (part_name, date);
+
+ALTER TABLE Fg_entry
+ADD PRIMARY KEY (part_name, date);
+
+ALTER TABLE Sales_entry
+ADD PRIMARY KEY (part_name, date);
+
 ALTER TABLE Part_track
 ADD CONSTRAINT fk1
+FOREIGN KEY (PART_NAME)
+REFERENCES Part_desc (PART_NAME);
+
+ALTER TABLE Part_track_2
+ADD CONSTRAINT fk2
 FOREIGN KEY (PART_NAME)
 REFERENCES Part_desc (PART_NAME);
 
