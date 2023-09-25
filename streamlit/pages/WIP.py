@@ -29,7 +29,8 @@ part = st.selectbox('SELECT PART', my_parts)
 value = st.number_input('ENTER NUMBER OF PARTS PRODUCED:', min_value = 0, step = 1)
 
 current_date = datetime.now().strftime("%Y-%m-%d")
+current_time = datetime.now().strftime("%H:%M:%S")
 
 if st.button('Enter'):
-    n = update_wip(part, value, current_date, operator, machine)
+    n = update_wip(part, value, current_date, operator, machine, current_time)
     st.write(current_date)

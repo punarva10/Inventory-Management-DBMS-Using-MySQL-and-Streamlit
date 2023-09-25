@@ -43,7 +43,7 @@ def get_parts():
     data = c.fetchall()
     return data
 
-def update_wip(part_name, amount, current_date, operator, machine):
+def update_wip(part_name, amount, current_date, operator, machine, current_time):
     sql = '''
     INSERT INTO part_track_2 (part_name, date, wip, fg, ng, sales)
     VALUES (%s, %s, %s, %s, %s, %s)
@@ -54,7 +54,7 @@ def update_wip(part_name, amount, current_date, operator, machine):
     parameters = (part_name, current_date, amount, 0, 0, 0, amount)
 
     c.execute(sql, parameters)  
-    c.execute('INSERT INTO Wip_entry VALUES (%s, %s, %s, %s, %s)', (current_date, operator, machine, part_name, amount))
+    c.execute('INSERT INTO Wip_entry VALUES (%s, %s, %s, %s, %s, %s)', (current_date, current_time, operator, machine, part_name, amount))
     
     mydb.commit()
     return str(c.rowcount)

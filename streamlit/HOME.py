@@ -16,7 +16,7 @@ def main():
     
     elif choice == "WIP ENTRY DETAILS":
         rows = get_wip_entry()
-        st.dataframe(rows, width = 1500)
+        st.dataframe(rows, width = 2000)
     
     elif choice == "FG ENTRY DETAILS":
         rows = get_fg_entry()

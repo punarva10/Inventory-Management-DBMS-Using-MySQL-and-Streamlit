@@ -22,17 +22,22 @@ CREATE TABLE Part_track_2 (DATE VARCHAR(100),
                         );
 
 CREATE TABLE Wip_entry (DATE VARCHAR(100),
+                        TIME VARCHAR(100),
                         OPERATOR_NAME VARCHAR(100),
                         MACHINE_NAME VARCHAR(100),
                         PART_NAME VARCHAR(100),
                         AMOUNT INT(10));
 
+
+
 CREATE TABLE Fg_entry (DATE VARCHAR(100),
+                        TIME VARCHAR(100),
                         OPERATOR_NAME VARCHAR(100),
                         PART_NAME VARCHAR(100),
                         AMOUNT INT(10));
 
 CREATE TABLE Sales_entry (DATE VARCHAR(100),
+                        TIME VARCHAR(100),
                         OPERATOR_NAME VARCHAR(100),
                         PART_NAME VARCHAR(100),
                         AMOUNT INT(10));
