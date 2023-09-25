@@ -59,8 +59,13 @@ def update_wip(part_name, amount, current_date, operator, machine, current_time)
     mydb.commit()
     return str(c.rowcount)
 
-def update_ng1(part_name, part_numbers):
-    c.execute('UPDATE part_track SET ng1 = ng1 + %s WHERE part_name = %s', (part_numbers, part_name))
+def update_ng1(part_name, amount, current_date, current_time, operator):
+    c.execute('UPDATE part_track_2 SET fg = fg + wip - %s WHERE part_name = %s AND date = %s', (amount, part_name, current_date))
+    
+    c.execute('INSERT INTO fg_entry VALUES (%s, %s, %s, %s, wip - %s)', (current_date, current_time, operator, part_name, amount))
+
+    c.execute('UPDATE part_track_2 SET wip = 0 WHERE part_name = %s AND date = %s', (part_name, current_date))
+    c.execute('UPDATE part_track_2 SET ng = ng + %s WHERE part_name = %s AND date = %s', (amount, part_name, current_date))
     mydb.commit()
     return str(c.rowcount)
 

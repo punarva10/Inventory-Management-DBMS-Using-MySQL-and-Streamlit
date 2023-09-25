@@ -33,4 +33,3 @@ current_time = datetime.now().strftime("%H:%M:%S")
 
 if st.button('Enter'):
     n = update_wip(part, value, current_date, operator, machine, current_time)
-    st.write(current_date)
