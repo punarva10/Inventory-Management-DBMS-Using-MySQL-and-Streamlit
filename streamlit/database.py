@@ -8,6 +8,8 @@ mydb = mysql.connector.connect(
 )
 c = mydb.cursor(buffered=True)
 
+wip_queue = []
+
 def get_details():
     c.execute('SELECT * FROM part_desc order by customer')
     columns = c.description 
@@ -44,6 +46,7 @@ def get_parts():
     return data
 
 def update_wip(part_name, amount, current_date, operator, machine, current_time):
+    global wip_queue
     sql = '''
     INSERT INTO part_track_2 (part_name, date, wip, fg, ng, sales)
     VALUES (%s, %s, %s, %s, %s, %s)
@@ -54,17 +57,19 @@ def update_wip(part_name, amount, current_date, operator, machine, current_time)
     parameters = (part_name, current_date, amount, 0, 0, 0, amount)
 
     c.execute(sql, parameters)  
+    wip_queue.append(amount)
     c.execute('INSERT INTO Wip_entry VALUES (%s, %s, %s, %s, %s, %s)', (current_date, current_time, operator, machine, part_name, amount))
     
     mydb.commit()
     return str(c.rowcount)
 
 def update_ng1(part_name, amount, current_date, current_time, operator):
-    c.execute('UPDATE part_track_2 SET fg = fg + wip - %s WHERE part_name = %s AND date = %s', (amount, part_name, current_date))
-    
-    c.execute('INSERT INTO fg_entry VALUES (%s, %s, %s, %s, wip - %s)', (current_date, current_time, operator, part_name, amount))
+    global wip_queue
+    wip_value = wip_queue.pop(0)
+    c.execute('UPDATE part_track_2 SET fg = fg + %s - %s WHERE part_name = %s AND date = %s', (wip_value, amount, part_name, current_date))
 
-    c.execute('UPDATE part_track_2 SET wip = 0 WHERE part_name = %s AND date = %s', (part_name, current_date))
+    c.execute('INSERT INTO fg_entry VALUES (%s, %s, %s, %s, %s - %s)', (current_date, current_time, operator, part_name, wip_value, amount))
+
     c.execute('UPDATE part_track_2 SET ng = ng + %s WHERE part_name = %s AND date = %s', (amount, part_name, current_date))
     mydb.commit()
     return str(c.rowcount)
