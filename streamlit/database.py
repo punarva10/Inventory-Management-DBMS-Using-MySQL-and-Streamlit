@@ -78,3 +78,6 @@ def update_ng2(part_name, part_numbers):
     c.execute('UPDATE part_track SET ng2 = ng2 + %s WHERE part_name = %s', (part_numbers, part_name))
     mydb.commit()
     return str(c.rowcount)
+
+
+#What to do: Ask samith about whether or not there is only one place where wip is converted to fg and only one place where fg is converted to sales.
